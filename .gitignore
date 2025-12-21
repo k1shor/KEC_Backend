@@ -1,0 +1,14 @@
+# contains list of files and folders that does not need to be uploaded to git
+
+node_modules
+package-lock.json
+
+.env
+.env.local
+.env.prod
+.env.dev
+.env.*
+
+public
+public/uploads/
+
