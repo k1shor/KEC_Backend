@@ -49,14 +49,122 @@ exports.register = async (req, res) => {
     }
 
     // send verification link in email - (nodemailer)
-    const URL = `http://localhost:5000/api/user/verify/${tokenToSend.token}`
+    // const URL = `http://localhost:5000/api/user/verify/${tokenToSend.token}`
+    const URL = `${process.env.FRONTEND_URL}/verify/${tokenToSend.token}`
 
     emailSender({
         from: `noreply@something.com`,
         to: email,
         subject: `Email verification`,
         text: `Copy paste ${URL} in browser to verify your account.`,
-        html: `<a href='${URL}'><button>VERIFY NOW</button></a>`
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Verify Your Email</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f4f4f4;
+    }
+
+    .wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .card {
+      max-width: 480px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 32px 24px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #111827;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: #4b5563;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    a button {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 12px 28px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 8px 16px rgba(37, 99, 235, 0.35);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+    }
+
+    a button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 22px rgba(37, 99, 235, 0.4);
+      background: #1d4ed8;
+    }
+
+    a button:active {
+      transform: translateY(0);
+      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.3);
+    }
+
+    .note {
+      margin-top: 18px;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .note span {
+      font-weight: 500;
+      color: #111827;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="card">
+      <h1 class="title">Verify your email address</h1>
+      <p class="subtitle">
+        Thanks for signing up! Please confirm that this is your email address by clicking
+        the button below.
+      </p>
+
+      <!-- Your required snippet -->
+      <a href="${URL}">
+        <button>VERIFY NOW</button>
+      </a>
+
+      <p class="note">
+        If the button doesn’t work, copy and paste this link into your browser:<br />
+        <span>${URL}</span>
+      </p>
+    </div>
+  </div>
+</body>
+</html>
+`
     })
 
     res.send({ userToRegister, success: true, message: "User registered successfully" })
@@ -117,8 +225,8 @@ exports.resendVerification = async (req, res) => {
     }
 
     // send token in email
-    const URL = `http://localhost:5000/api/user/verify/${tokenToSend.token}`
-
+    // const URL = `http://localhost:5000/api/user/verify/${tokenToSend.token}`
+    const URL = `${process.env.FRONTEND_URL}/verify/${tokenToSend.token}`
     emailSender({
         from: `noreply@something.com`,
         to: userToVerify.email,
@@ -147,13 +255,127 @@ exports.forgetPassword = async (req, res) => {
         return res.status(400).json({ error: "Something went wrong. Try again Later" })
     }
     // send password reset link in email
-    let URL = `http://localhost:5000/api/user/resetpassword/${tokenToSend.token}`
+    // let URL = `http://localhost:5000/api/user/resetpassword/${tokenToSend.token}`
+    let URL = `${process.env.FRONTEND_URL}/resetpassword/${tokenToSend.token}`
     emailSender({
         from: `noreply@something.com`,
         to: req.body.email,
         subject: "RESET PASSWORD LINK",
         text: "Copy Paste the following link in browser. " + URL,
-        html: `<a href='${URL}'><button>RESET PASSWORD</button></a>`
+        html: `
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Reset Your Password</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f4f4f4;
+    }
+
+    .wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      max-width: 480px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 32px 24px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #111827;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: #4b5563;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    a button {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 12px 28px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      background: #16a34a;
+      color: #ffffff;
+      box-shadow: 0 8px 16px rgba(22, 163, 74, 0.35);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+    }
+
+    a button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 22px rgba(22, 163, 74, 0.4);
+      background: #15803d;
+    }
+
+    a button:active {
+      transform: translateY(0);
+      box-shadow: 0 6px 14px rgba(22, 163, 74, 0.3);
+    }
+
+    .note {
+      margin-top: 18px;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .note span {
+      font-weight: 500;
+      color: #111827;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="card">
+      <h1 class="title">Reset your password</h1>
+      <p class="subtitle">
+        We received a request to reset your password. Click the button below to
+        choose a new one.
+      </p>
+
+      <!-- Your required snippet -->
+      <a href="${URL}">
+        <button>RESET PASSWORD</button>
+      </a>
+
+      <p class="note">
+        If the button doesn’t work, copy and paste this link into your browser:<br />
+        <span>${URL}</span>
+      </p>
+
+      <p class="note">
+        If you didn’t request this, you can safely ignore this email.
+      </p>
+    </div>
+  </div>
+</body>
+</html>
+`
     })
 
     // send message to user
@@ -214,7 +436,7 @@ exports.login = async (req, res) => {
     )
 
     // send message, login token to user
-    res.send({success: true, message: "Login successful", token})
+    res.send({success: true, message: "Login successful", token, role: userToLogin.role, id: userToLogin._id})
 }
 
 // get users list

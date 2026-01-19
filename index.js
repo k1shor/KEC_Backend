@@ -26,6 +26,8 @@ app.use('/api/product', ProductRoute)
 app.use('/api/user', UserRoute)
 app.use('/api/order', OrderRoute)
 
+app.use('/api/public/uploads', express.static('public/uploads'))
+
 app.listen(port, () => {
     console.log(`APP STARTED SUCCESSFULLY AT ${port}`);
 })

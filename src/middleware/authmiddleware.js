@@ -40,7 +40,7 @@ exports.isAdmin = async (req, res, next) => {
         if (!user) {
             return res.status(401).json({ error: "Invalid user" })
         }
-        if(user.role !== 0){
+        if(user.role !== 1){
             return res.status(403).json({error:"User not authorized."})
         }
         next()

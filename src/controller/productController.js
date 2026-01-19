@@ -89,3 +89,46 @@ exports.deleteProduct = (req, res) => {
             return res.status(400).json({ error: error.message })
         })
 }
+
+// get filtered products
+exports.getFilteredProducts = async (req, res) => {
+    // req.body - {category: [a, b, c] , product_price: [lo, up]}
+    let filters = {}
+
+    for (var key in req.body) {
+        if (req.body[key].length > 0) {
+            if (key === 'category') {
+                filters[key] = req.body[key]
+            }
+            else {
+                filters[key] = {
+                    '$gte': req.body[key][0],
+                    '$lte': req.body[key][1]
+                }
+            }
+        }
+    }
+
+    let products = await ProductModel.find(filters).populate('category')
+
+    if (!products) {
+        return res.status(400).json({ error: "SOmething went wrong" })
+    }
+    res.send({ products })
+}
+
+// related products
+exports.getRelatedProducts = async (req, res) => {
+    let product = await ProductModel.findById(req.params.id)
+    if (!product) {
+        return res.status(400).json({ error: "Something went wrong" })
+    }
+    let products = await ProductModel.find({
+        category: product.category,
+        _id: { '$ne': product._id }
+    })
+    if (!products) {
+        return res.status(400).json({ error: "Something went wrong" })
+    }
+    res.send({products})
+}

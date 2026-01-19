@@ -1,4 +1,4 @@
-const { addProduct, getAllProducts, getProductDetails, getProductsByCategory, updateProduct, deleteProduct } = require('../controller/productController')
+const { addProduct, getAllProducts, getProductDetails, getProductsByCategory, updateProduct, deleteProduct, getFilteredProducts, getRelatedProducts } = require('../controller/productController')
 const { isAdmin } = require('../middleware/authmiddleware')
 const upload = require('../middleware/upload')
 
@@ -11,5 +11,8 @@ router.get('/getproductsbycategory/:categoryId', getProductsByCategory)
 router.put('/updateproduct/:id', isAdmin, upload.single('product_image'), updateProduct)
 
 router.delete('/deleteproduct/:id', isAdmin, deleteProduct)
+
+router.post('/getfilteredproducts', getFilteredProducts)
+router.get('/getrelatedproducts/:id', getRelatedProducts)
 
 module.exports = router
