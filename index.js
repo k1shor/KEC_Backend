@@ -11,6 +11,7 @@ const CategoryRoute = require('./src/routes/categoryRoutes');
 const ProductRoute = require('./src/routes/productRoutes');
 const UserRoute = require('./src/routes/userRoute')
 const OrderRoute = require('./src/routes/orderRoutes')
+const PaymentRoute = require('./src/routes/paymentRoutes')
 
 const app = express();
 app.use(express.json());
@@ -25,6 +26,7 @@ app.use('/api/category', CategoryRoute)
 app.use('/api/product', ProductRoute)
 app.use('/api/user', UserRoute)
 app.use('/api/order', OrderRoute)
+app.use('/api/payment', PaymentRoute)
 
 app.use('/api/public/uploads', express.static('public/uploads'))
 
